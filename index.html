@@ -8,7 +8,72 @@
     <h1>Rock Paper Scissors!</h1>
 
     <script>
-    
+      let playerResponse = prompt("Rock, Paper, or Scissors?");
+
+      let round = playRound(playerResponse);
+
+      switch(round) {
+        case 0:
+        alert("Play Nice! Pick one of the options.");
+        break;
+        case 1:
+        alert("You won");
+        break;
+        case 2:
+        alert("You Lost");
+        break;
+        case 3:
+        alert("It was a Tie!");
+        break;
+      }
+
+      function playRound(playerResponse, computer = opponentResponse()) {
+          playerResponse = playerResponse.toLowerCase();
+
+          if(playerResponse != "rock" && playerResponse != "paper" && playerResponse != "scissors") {
+              return 0; //invalid input
+          } else if(playerResponse == computer) {
+              return 3; //tie
+          } else {
+            if(playerResponse == "rock") {
+              if (computer == "paper") {
+                return 2; //paper wins - p2 wins.
+              } else {
+                return 1; //rock wins vs scissors - p1 wins.
+              }
+            } else if(playerResponse == "paper") {
+              if (computer == "scissors") {
+                return 2; //scissors beats paper - p2 wins.
+              } else {
+                return 1; //paper beats rock - p1 wins.
+              }
+            } else if(playerResponse == "scissors") {
+              if (computer == "rock") {
+                return 2; //Rock beats scissors - p2 wins.
+              } else {
+                return 1; //Scissors beats paper - p1 wins.
+              }
+            }
+          }
+      }
+
+      function opponentResponse() {
+        let response = Math.floor(Math.random() * 3 + 1);
+
+        switch (response) {
+          case 1:
+          response = "rock";
+          break;
+          case 2:
+          response = "paper";
+          break;
+          case 3:
+          response = "scissors";
+          break;
+        }
+
+        return response;
+      }
     </script>
   </body>
 </html>
