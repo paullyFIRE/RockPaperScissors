@@ -1,79 +1,143 @@
 <html lang='eng'>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>Rock Paper Scissors</title>
-  </head>
+</head>
 
-  <body>
+<body>
     <h1>Rock Paper Scissors!</h1>
+    <h2 id="round-result"></h2>
+    <label class="score-label">Player Score: <span id="player-score">0</span></label>
+    <label class="score-label">Computer Score: <span id="cpu-score">0</span></label>
 
     <script>
-      let playerResponse = prompt("Rock, Paper, or Scissors?");
+        const playerScore = document.querySelector('#player-score');
+        const cpuScore = document.querySelector('#cpu-score');
+        const result = document.querySelector('#round-result');
 
-      let round = playRound(playerResponse);
-
-      switch(round) {
-        case 0:
-        alert("Play Nice! Pick one of the options.");
-        break;
-        case 1:
-        alert("You won");
-        break;
-        case 2:
-        alert("You Lost");
-        break;
-        case 3:
-        alert("It was a Tie!");
-        break;
-      }
-
-      function playRound(playerResponse, computer = opponentResponse()) {
-          playerResponse = playerResponse.toLowerCase();
-
-          if(playerResponse != "rock" && playerResponse != "paper" && playerResponse != "scissors") {
-              return 0; //invalid input
-          } else if(playerResponse == computer) {
-              return 3; //tie
-          } else {
-            if(playerResponse == "rock") {
-              if (computer == "paper") {
-                return 2; //paper wins - p2 wins.
-              } else {
-                return 1; //rock wins vs scissors - p1 wins.
-              }
-            } else if(playerResponse == "paper") {
-              if (computer == "scissors") {
-                return 2; //scissors beats paper - p2 wins.
-              } else {
-                return 1; //paper beats rock - p1 wins.
-              }
-            } else if(playerResponse == "scissors") {
-              if (computer == "rock") {
-                return 2; //Rock beats scissors - p2 wins.
-              } else {
-                return 1; //Scissors beats paper - p1 wins.
-              }
-            }
-          }
-      }
-
-      function opponentResponse() {
-        let response = Math.floor(Math.random() * 3 + 1);
-
-        switch (response) {
-          case 1:
-          response = "rock";
-          break;
-          case 2:
-          response = "paper";
-          break;
-          case 3:
-          response = "scissors";
-          break;
+        let gameState = {
+            player: 0,
+            cpu: 0,
+            victoryLimit: 0,
+            lastRoundMessage: ""
         }
 
-        return response;
-      }
+        let round = playRound("rock");
+        updateState(round);
+
+        //Update UI
+        //Set Result Message, Updates Scores
+        function updateState(round) {
+            switch (round.roundResult) {
+                case 0:
+                    gameState.lastRoundMessage = "Play Nice! Pick one of the options.";
+                    break;
+                case 1:
+                    gameState.player++;
+                    gameState.lastRoundMessage = "You won";
+                    break;
+                case 2:
+                    gameState.cpu++;
+                    gameState.lastRoundMessage = "You Lost";
+                    break;
+                case 3:
+                    gameState.lastRoundMessage = "It was a Tie!";
+                    break;
+            }
+
+            playerScore.textContent = gameState.player;
+            cpuScore.textContent = gameState.cpu;
+            result.textContent = gameState.lastRoundMessage;
+        }
+
+        //Function
+        //Returns Obj
+        //	    playerResponse: rock/paper/scissors,
+        //      computerResponse: rock/paper/scissors,
+        //      roundResult: 0 (invalid input), 1 (player wins), 2 (cpu wins), 3 (tie)
+        function playRound(playerChoice) {
+            let playerPrompt;
+
+            if (!playerChoice) {
+                playerPrompt = prompt("Rock, Paper, or Scissors?");
+                playerPrompt = playerPrompt.toLowerCase();
+            } else {
+                playerPrompt = playerChoice;
+            }
+
+            let computer = opponentResponse();
+
+            let response = {
+                playerResponse: playerPrompt,
+                computerResponse: computer,
+                roundResult: null
+            };
+
+            response.roundResult = evaluateRound(playerPrompt, computer);
+
+            return response;
+        }
+
+        //Returns 0 (invalid input), 1 (player wins), 2 (cpu wins), 3 (tie)
+        function evaluateRound(playerTurn, computerTurn) {
+            switch (playerTurn) {
+                case computerTurn: //TIE
+                    return 3;
+                    break;
+                case "rock":
+                    switch (computerTurn) {
+                        case "paper":
+                            return 2;
+                            break;
+                        case "scissors":
+                            return 1;
+                            break;
+                    }
+                    break;
+                case "paper":
+                    switch (computerTurn) {
+                        case "scissors":
+                            return 2;
+                            break;
+                        case "rock":
+                            return 1;
+                            break;
+                    }
+                    break;
+                case "scissors":
+                    switch (computerTurn) {
+                        case "rock":
+                            return 2;
+                            break;
+                        case "paper":
+                            return 1;
+                            break;
+                    }
+                    break;
+                default: //invalid input, not Rock, Paper, or Scissors.
+                    return 0;
+                    break;
+            }
+        }
+
+        //Random Generates Rock, Paper, or Scissors for the CPU.
+        function opponentResponse() {
+            let response = Math.floor(Math.random() * 3 + 1);
+            switch (response) {
+                case 1:
+                    response = "rock";
+                    break;
+                case 2:
+                    response = "paper";
+                    break;
+                case 3:
+                    response = "scissors";
+                    break;
+            }
+            return response;
+        }
     </script>
-  </body>
+</body>
+
 </html>
