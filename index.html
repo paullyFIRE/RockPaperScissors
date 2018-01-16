@@ -3,23 +3,32 @@
 <head>
     <meta charset="utf-8">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" text="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
     <link rel="stylesheet" text="text/css" href="style.css">
 </head>
 
 <body>
-	<header>
-	    <h1>Rock Paper Scissors!</h1>
-	    <h2 id="round-result"></h2>
+	<header class="jumbotron">
+	    <h1>Rock Paper Scissors</h1>
 	</header>
+
 	<div class="results">
+		<h2 id="round-result">Hallo. Hit a button to begin!</h2>
+	</div>
+	<div class="scores">
+		<label class="score-label">Victory Points: <span id="victory-score">0</span></label>
 	    <label class="score-label">Player Score: <span id="player-score">0</span></label>
 	    <label class="score-label">Computer Score: <span id="cpu-score">0</span></label>
 	</div>
 	<div class="action-buttons">
-		<button type="submit" value="rock">Rock</button>
-		<button type="submit" value="paper">Paper</button>
-		<button type="submit" value="scissors">Scissors</button>
+		<button class="btn play-button" value="rock">Rock</button>
+		<button class="btn play-button" value="paper">Paper</button>
+		<button class="btn play-button" value="scissors">Scissors</button>
 	</div>
+	<div class="game-state-buttons">
+		<button class="btn play-button" value="reset">Reset</button>
+	</div>
+
 
     <script src="script.js"></script>
 </body>

@@ -1,13 +1,40 @@
-* {
-	marign: 0;
-	padding: 0;
+header {
+	width: 80%;
+	margin: 0 auto;
 }
 
-h1, h1 {
+header h1, header h2 {
+	width: auto;
+	margin: 0 auto;
+	text-align: center;
+}
+
+header h1 {
+	padding-bottom: 15px;
+}
+
+h2 {
 	display: block;
+	margin: 0 auto;
 }
 
-button {
+.scores, .action-buttons, .game-state-buttons, .results {
 	display: flex;
+	justify-content: center;
+
+	width: 65%;
+	margin: 0 auto;
+	padding-bottom: 10px;
 }
 
+.scores > *, .action-buttons > * {
+	margin: 10px;
+}
+
+.action-buttons > * {
+	width: 100px;
+}
+
+.game-state-buttons > * {
+	width: 250px;
+}
