@@ -3,21 +3,21 @@
 function updateState(result) {
     switch (result.roundResult) {
         case 0:
-            gameState.lastRoundMessage = "Something went wrong :(";
+            result.lastRoundMessage = "Something went wrong :(";
             break;
         case 1:
             gameState.player++;
-            gameState.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="win">Won!</span>`;
-            updateHistory(gameState.lastRoundMessage);
+            result.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="win">Won!</span>`;
+            updateHistory(result.lastRoundMessage);
             break;
         case 2:
             gameState.cpu++;
-            gameState.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="lose">Lost!</span>`;
-            updateHistory(gameState.lastRoundMessage);
+            result.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="lose">Lost!</span>`;
+            updateHistory(result.lastRoundMessage);
             break;
         case 3:
-            gameState.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. <strong>Tie!</strong>`;
-            updateHistory(gameState.lastRoundMessage);
+            result.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. <strong>Tie!</strong>`;
+            updateHistory(result.lastRoundMessage);
             break;
     }
 }
@@ -41,11 +41,14 @@ function capFirstLetter(str) {
 }
 
 //Updates the SCores/Round Result Message
-function updateScores() {
+function updateScores(response) {
     playerScore.innerHTML = gameState.player;
     cpuScore.innerHTML = gameState.cpu;
-    result.innerHTML = gameState.lastRoundMessage;
+    if(response) {
+        result.innerHTML = response.lastRoundMessage;
+    }
 }
+    
 
 //starts the round, taking in the player and CPU choices.
 function beginRound(playerPrompt, computerTurn) {
@@ -53,7 +56,8 @@ function beginRound(playerPrompt, computerTurn) {
     let response = {
         playerResponse: playerPrompt,
         computerResponse: computerTurn,
-        roundResult: null
+        roundResult: null,
+        lastRoundMessage: ""
     };
 
     //gets the round result and adds it to responseObject
@@ -63,7 +67,7 @@ function beginRound(playerPrompt, computerTurn) {
     updateState(response);
 
     //update scores
-    updateScores();
+    updateScores(response);
 
     //checks for victory conditions if previous round was NOT a tie
     if (response.roundResult !== 3) {
@@ -143,7 +147,7 @@ function resetGame() {
 
     gameState.player = 0;
     gameState.cpu = 0;
-    gameState.lastRoundMessage = initialResultText;
+    result.innerHTML = initialResultText;
 
 }
 
@@ -200,6 +204,5 @@ const initialResultText = result.textContent;
 var gameState = {
     player: 0,
     cpu: 0,
-    victoryLimit: 5,
-    lastRoundMessage: ""
+    victoryLimit: 5
 }
