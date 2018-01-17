@@ -1,3 +1,4 @@
+
 //Update UI
 //Set Result Message, Updates Scores
 function updateState(result) {
@@ -24,15 +25,15 @@ function updateState(result) {
 
 //Post to history log
 function updateHistory(message) {
-    const history = document.querySelector('.round-history');
-    const p = document.createElement('p');
+    const history = document.querySelector(".round-history");
+    const p = document.createElement("p");
     p.innerHTML = message;
     history.insertBefore(p, history.firstChild);
 }
 
 //Clear children of History Section
 function clearHistory() {
-    const history = document.querySelector('.round-history');
+    const history = document.querySelector(".round-history");
     history.innerHTML = "";
 }
 
@@ -48,7 +49,6 @@ function updateScores(response) {
         result.innerHTML = response.lastRoundMessage;
     }
 }
-    
 
 //starts the round, taking in the player and CPU choices.
 function beginRound(playerPrompt, computerTurn) {
@@ -80,40 +80,14 @@ function evaluateRound(playerTurn, computerTurn) {
     switch (playerTurn) {
         case computerTurn: //TIE
             return 3;
-            break;
         case "rock":
-            switch (computerTurn) {
-                case "paper":
-                    return 2;
-                    break;
-                case "scissors":
-                    return 1;
-                    break;
-            }
-            break;
+            return computerTurn == "scissors" ? 2 : 1;
         case "paper":
-            switch (computerTurn) {
-                case "scissors":
-                    return 2;
-                    break;
-                case "rock":
-                    return 1;
-                    break;
-            }
-            break;
+            return computerTurn == "scissors" ? 2 : 1;
         case "scissors":
-            switch (computerTurn) {
-                case "rock":
-                    return 2;
-                    break;
-                case "paper":
-                    return 1;
-                    break;
-            }
-            break;
+            return computerTurn == "rock" ? 2 : 1;
         default: //invalid input, not Rock, Paper, or Scissors.
             return 0;
-            break;
     }
 }
 
@@ -168,8 +142,8 @@ function handleVictory() {
 
 //Toggles player-button states between enabled/disabled
 function toggleButtons() {
-    playerButtons.forEach(button => {
-        if (button.value !== 'reset') {
+    playerButtons.forEach((button) => {
+        if (button.value !== "reset") {
             button.disabled = !button.disabled;
         }
     });
@@ -180,8 +154,8 @@ window.onload = function() {
     victoryScore.textContent = gameState.victoryLimit;
 
     //adding event listener for buttons
-    playerButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
+    playerButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
             if (event.srcElement.value === "reset") {
                 resetGame();
                 updateScores();
@@ -193,15 +167,15 @@ window.onload = function() {
     });
 };
 
-const playerScore = document.querySelector('#player-score');
-const cpuScore = document.querySelector('#cpu-score');
-const result = document.querySelector('#round-result');
-const victoryScore = document.querySelector('#victory-score');
-const playerButtons = Array.from(document.querySelectorAll('.play-button'));
+const playerScore = document.querySelector("#player-score");
+const cpuScore = document.querySelector("#cpu-score");
+const result = document.querySelector("#round-result");
+const victoryScore = document.querySelector("#victory-score");
+const playerButtons = Array.from(document.querySelectorAll(".play-button"));
 const initialResultText = result.textContent;
 
 //setting gamestate
-var gameState = {
+let gameState = {
     player: 0,
     cpu: 0,
     victoryLimit: 5
