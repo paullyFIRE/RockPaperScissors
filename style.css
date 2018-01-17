@@ -1,24 +1,10 @@
 header {
 	width: 80%;
 	margin: 0 auto;
-}
-
-header h1, header h2 {
-	width: auto;
-	margin: 0 auto;
 	text-align: center;
 }
 
-header h1 {
-	padding-bottom: 15px;
-}
-
-h2 {
-	display: block;
-	margin: 0 auto;
-}
-
-.scores, .action-buttons, .game-state-buttons, .results {
+.scores, .action-buttons, .game-state-buttons, .results, .round-history {
 	display: flex;
 	justify-content: center;
 
@@ -32,9 +18,49 @@ h2 {
 }
 
 .action-buttons > * {
-	width: 100px;
+	width: 150px;
+	height: 150px;
 }
 
 .game-state-buttons > * {
 	width: 250px;
+}
+
+.round-history {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 20px;
+}
+
+img {
+	width: 100px;
+	height: 150px;
+}
+
+.win, .lose {
+	font-weight: bold;
+}
+
+.win {
+	color: green;
+}
+ 
+.lose {
+	color: red;
+}
+
+/* Webkit to hide vertical scrollbar that appears when history lengthens the page*/
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
 }

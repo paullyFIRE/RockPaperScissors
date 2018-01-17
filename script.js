@@ -3,34 +3,51 @@
 function updateState(result) {
    switch (result.roundResult) {
        case 0:
-           gameState.lastRoundMessage = "Play Nice! Pick one of the options.";
+           gameState.lastRoundMessage = "Something went wrong :(";
            break;
        case 1:
            gameState.player++;
-           gameState.lastRoundMessage = `They played ${result.computerResponse}. You Won!`;
+           gameState.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="win">Won!</span>`;
+           updateHistory(gameState.lastRoundMessage);
            break;
        case 2:
            gameState.cpu++;
-           gameState.lastRoundMessage = `They played ${result.computerResponse}. You Lost!`;
+           gameState.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="lose">Lost!</span>`;
+           updateHistory(gameState.lastRoundMessage);
            break;
        case 3:
-           gameState.lastRoundMessage = `They played ${result.computerResponse}. It was a Tie!`;
+           gameState.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. <strong>Tie!</strong>`;
+           updateHistory(gameState.lastRoundMessage);
            break;
    }
 }
 
-function updateFE() {
-    playerScore.textContent = gameState.player;
-    cpuScore.textContent = gameState.cpu;
-    result.textContent = gameState.lastRoundMessage;
+//Post to history log
+function updateHistory(message) {
+    const history = document.querySelector('.round-history');
+    const p = document.createElement('p');
+    p.innerHTML = message;
+    history.insertBefore(p , history.firstChild);
 }
 
-//Function
-//Returns Obj
-//   playerResponse: rock/paper/scissors,
-//      computerResponse: rock/paper/scissors,
-//      roundResult: 0 (invalid input), 1 (player wins), 2 (cpu wins), 3 (tie)
-function play(playerPrompt, computerTurn) {
+function clearHistory() {
+    const history = document.querySelector('.round-history');
+    history.innerHTML = "";
+}
+
+function capFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1); 
+}
+
+//Updates the SCores/Round Result Message
+function updateFE() {
+    playerScore.innerHTML = gameState.player;
+    cpuScore.innerHTML = gameState.cpu;
+    result.innerHTML = gameState.lastRoundMessage;
+}
+
+//starts the round, taking in the player and CPU choice.
+function beginRound(playerPrompt, computerTurn) {
 
    let response = {
        playerResponse: playerPrompt,
@@ -38,9 +55,19 @@ function play(playerPrompt, computerTurn) {
        roundResult: null
    };
 
+   //gets the round result and adds it to responseObject
    response.roundResult = evaluateRound(playerPrompt, computerTurn);
 
-   updateState(response);
+   //passes result to update gameState
+    updateState(response);
+
+    //update scores
+    updateFE();
+
+    //checks for victory conditions if previous round was NOT a tie
+    if(response.roundResult !== 3) {
+        handleVictory();
+    }
 }
 
 //Returns 0 (invalid input), 1 (player wins), 2 (cpu wins), 3 (tie)
@@ -85,7 +112,7 @@ function evaluateRound(playerTurn, computerTurn) {
    }
 }
 
-//Random Generates Rock, Paper, or Scissors for the CPU.
+//Randomly Generates Rock, Paper, or Scissors for the CPU.
 function opponentResponse() {
    let response = Math.floor(Math.random() * 3 + 1);
    switch (response) {
@@ -110,6 +137,8 @@ function resetGame() {
     if(anyDisabledButtons) {
         toggleButtons();
     }
+
+    clearHistory();
     
     gameState.player = 0;
     gameState.cpu = 0;
@@ -117,18 +146,22 @@ function resetGame() {
 
 }
 
+//Checks for victory conditions.
 function handleVictory() {
    if(gameState.player == gameState.victoryLimit) {
         //player won
         result.textContent = "You won the game :D";
         toggleButtons();
+        updateHistory(`<strong>${result.textContent}</strong>`);
    } else if(gameState.cpu == gameState.victoryLimit) {
         //CPU won
         result.textContent = "You lost the game :(";
         toggleButtons();
+        updateHistory(`<strong>${result.textContent}</strong>`);
    }
 }
 
+//Toggles player-button states between enabled/disabled
 function toggleButtons() {
     playerButtons.forEach(button => {
         if(button.value !== 'reset') {
@@ -138,6 +171,9 @@ function toggleButtons() {
 }
 
 window.onload = function () {
+    //add victory score to FE
+    victoryScore.textContent = gameState.victoryLimit;
+
     //adding event listener for buttons
     playerButtons.forEach(button => {
         button.addEventListener('click', (event) => {
@@ -146,9 +182,7 @@ window.onload = function () {
                 updateFE();
             } else {
                 let computer = opponentResponse();
-                let round = play(event.srcElement.value, computer);
-                updateFE();
-                handleVictory();
+                beginRound(event.currentTarget.value, computer);
             }
         });
     }); 
@@ -159,16 +193,12 @@ const cpuScore = document.querySelector('#cpu-score');
 const result = document.querySelector('#round-result');
 const victoryScore = document.querySelector('#victory-score');
 const playerButtons = Array.from(document.querySelectorAll('.play-button'));
-
 const initialResultText = result.textContent;
 
 //setting gamestate
-
 var gameState = {
    player: 0,
    cpu: 0,
    victoryLimit: 5,
    lastRoundMessage: ""
 }
-
-victoryScore.textContent = gameState.victoryLimit;
