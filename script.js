@@ -8,16 +8,16 @@
                 break;
             case 1:
                 gameState.player++;
-                result.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="win">Won!</span>`;
+                result.lastRoundMessage = `${capFirstLetter(result.computerResponse)} vs. ${capFirstLetter(result.playerResponse)}. You <span class="win">Won!</span>`;
                 updateHistory(result.lastRoundMessage);
                 break;
             case 2:
                 gameState.cpu++;
-                result.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. You <span class="lose">Lost!</span>`;
+                result.lastRoundMessage = `${capFirstLetter(result.computerResponse)} vs. ${capFirstLetter(result.playerResponse)}. You <span class="lose">Lost!</span>`;
                 updateHistory(result.lastRoundMessage);
                 break;
             case 3:
-                result.lastRoundMessage = `${capFirstLetter(result.playerResponse)} vs. ${capFirstLetter(result.computerResponse)}. <strong>Tie!</strong>`;
+                result.lastRoundMessage = `${capFirstLetter(result.computerResponse)} vs. ${capFirstLetter(result.playerResponse)}. <strong>Tie!</strong>`;
                 updateHistory(result.lastRoundMessage);
                 break;
         }
