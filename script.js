@@ -155,7 +155,7 @@
         //adding event listener for buttons
         playerButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
-                if (event.srcElement.value === "reset") {
+                if (event.currentTarget.value === "reset") {
                     resetGame();
                     updateScores();
                 } else {
