@@ -81,7 +81,7 @@
             case computerTurn: //TIE
                 return 3;
             case "rock":
-                return computerTurn == "scissors" ? 2 : 1;
+                return computerTurn == "scissors" ? 1 : 2;
             case "paper":
                 return computerTurn == "scissors" ? 2 : 1;
             case "scissors":
